@@ -1,0 +1,40 @@
+{
+  "name": "v0-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "packageManager": "pnpm@10.15.0",
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0",
+    "build": "astro check && astro build",
+    "preview": "astro preview --host 0.0.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1718-io/debrouillez-vous.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1718-io/debrouillez-vous/issues"
+  },
+  "homepage": "https://github.com/1718-io/debrouillez-vous#readme",
+  "dependencies": {
+    "@astrojs/node": "^11.1.6",
+    "@astrojs/react": "^6.0.6",
+    "@supabase/supabase-js": "^2.116.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.3",
+    "lucide-react": "^1.47.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SupportForm from '../components/SupportForm';
+import VisitorCounter from '../components/VisitorCounter';
+import { frontmatter } from '../content/home.md';
+
+interface ManifestFrontmatter {
+  title: string;
+  number?: string;
+}
+interface ManifestModule {
+  frontmatter: ManifestFrontmatter;
+  Content: typeof import('../content/manifest/introduction.md').Content;
+}
+
+const introduction = import.meta.glob('../content/manifest/introduction.md', { eager: true }) as Record<string, ManifestModule>;
+const principles = Object.entries(import.meta.glob('../content/manifest/principle-*.md', { eager: true }) as Record<string, ManifestModule>)
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }));
+const IntroductionContent = Object.values(introduction)[0].Content;
+
+// Keep the public landing page static for fast delivery. The visitor API remains server-side.
+export const prerender = true;
+
+interface IdeaModule {
+  frontmatter: { title: string; number: string };
+  Content: typeof import('../content/idea-01.md').Content;
+}
+
+const ideas = Object.entries(import.meta.glob('../content/idea-*.md', { eager: true }) as Record<string, IdeaModule>)
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }));
+---
+<BaseLayout title={frontmatter.title} description={frontmatter.description} keywords={frontmatter.keywords}>
+  <header class="fixed inset-x-0 top-0 z-20 border-b border-white/10 bg-night/80 backdrop-blur-xl">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4" aria-label="Navigation principale">
+      <a href="#top" class="flex items-center gap-3 font-display text-sm font-bold tracking-tight"><span class="h-3 w-3 rounded-full bg-signal shadow-[0_0_14px_#eab308]" aria-hidden="true"></span>GILETS JAUNES <span class="text-signal">2026</span><span class="french-flag" role="img" aria-label="Drapeau français"><span></span><span></span><span></span></span></a>
+      <div class="hidden items-center gap-7 text-sm text-zinc-400 md:flex"><a class="transition hover:text-white" href="#manifeste">Manifeste</a><a class="transition hover:text-white" href="#idees">Revendications</a><a class="transition hover:text-white" href="/ric">Le R.I.C.</a><a class="transition hover:text-white" href="#soutenir">Soutenir</a></div>
+      <a href="#soutenir" class="hidden rounded-full border border-signal/60 px-4 py-2 text-xs font-bold text-signal transition hover:bg-signal hover:text-night sm:block">REJOINDRE</a>
+    </nav>
+  </header>
+  <main id="top">
+    <section class="relative isolate flex min-h-screen items-center overflow-hidden px-6 pb-20 pt-32">
+      <div class="absolute inset-0 -z-10 grid-noise opacity-50"></div><div class="absolute -right-32 top-20 -z-10 h-96 w-96 rounded-full bg-signal/10 blur-3xl"></div>
+      <div class="mx-auto grid w-full max-w-7xl gap-16 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
+        <div><div class="mb-8 inline-flex items-center gap-2 rounded-full border border-signal/30 bg-signal/5 px-4 py-2 text-xs font-semibold uppercase tracking-[.18em] text-signal"><span aria-hidden="true">✦</span> Le mouvement citoyen</div><h1 class="max-w-4xl font-display text-6xl font-bold leading-[.94] tracking-[-.06em] sm:text-8xl">Le peuple<br /><span class="text-signal">reprend</span><br />la parole.</h1><p class="mt-8 max-w-xl text-lg leading-relaxed text-zinc-400">Nous ne sommes pas une couleur. Nous sommes une voix collective, libre et déterminée. En 2026, faisons de nos colères une force.</p><div class="mt-10 flex flex-wrap gap-4"><a href="#soutenir" class="group flex items-center gap-3 rounded-full bg-signal px-6 py-3.5 font-bold text-night transition hover:bg-yellow-300">Je soutiens le mouvement <span aria-hidden="true" class="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span></a><a href="#manifeste" class="flex items-center gap-2 rounded-full border border-white/15 px-6 py-3.5 font-semibold transition hover:border-white/40">Lire le manifeste <span aria-hidden="true">↓</span></a></div></div>
+        <div class="flex min-w-0 flex-col gap-6"><div class="rounded-[2rem] border border-white/10 bg-white/[.04] p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-7"><div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-5"><span class="text-sm text-zinc-500">MOBILISATION NATIONALE</span><span class="flex items-center gap-2 text-xs text-signal"><span class="h-2 w-2 animate-pulse rounded-full bg-signal"></span> EN DIRECT</span></div><div class="py-10"><p class="font-display text-6xl font-bold tracking-[-.06em] text-white sm:text-7xl"><VisitorCounter client:idle /></p><p class="mt-2 text-lg text-zinc-400">citoyens engagés <span class="text-signal">↗</span></p></div><div class="flex items-end justify-between gap-4 border-t border-white/10 pt-5"><div><p class="text-xs uppercase tracking-wider text-zinc-500">Objectif 2026</p><p class="mt-1 font-display text-2xl font-bold">100 000 voix</p></div><span class="text-2xl text-signal" aria-hidden="true">◉</span></div></div><div class="self-start rounded-2xl border border-signal/40 bg-signal px-5 py-3 text-xs font-bold uppercase tracking-wider text-night">On ne lâche rien.</div><aside class="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-4 text-sm leading-relaxed text-zinc-400" aria-label="Protection de la vie privée"><span class="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border border-signal/60 text-xs font-bold text-signal" aria-hidden="true">i</span><p class="min-w-0"><strong class="font-semibold text-zinc-200">Votre vie privée est respectée.</strong> Aucune donnée personnelle collectée, aucun cookie : ni nom, ni e-mail, ni adresse IP. Le compteur de visiteurs n’est qu’un total : votre navigateur retient seulement qu’il a déjà été compté.</p></aside></div>
+      </div>
+    </section>
+    <section id="manifeste" class="manifesto-section border-y border-white/10 bg-[#f4f0e8] px-4 py-20 text-zinc-900 sm:px-6 sm:py-28"><div class="mx-auto max-w-5xl"><div class="mb-10 flex flex-col items-center gap-6 text-center sm:mb-14"><svg class="h-16 w-16 drop-shadow-md" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="30" fill="#d0212f"/><circle cx="32" cy="32" r="20.5" fill="#fff"/><circle cx="32" cy="32" r="11" fill="#1f3f8f"/><circle cx="32" cy="32" r="30" fill="none" stroke="rgba(0,0,0,.25)"/><circle cx="32" cy="32" r="20.5" fill="none" stroke="rgba(0,0,0,.12)"/></svg><p class="text-xs font-bold uppercase tracking-[.3em] text-[#1f3f8f]">Manifeste · 2026</p><h2 class="max-w-3xl font-display text-5xl font-bold leading-[.92] tracking-[-.06em] sm:text-7xl">Pour le retour<br /><span class="text-[#1f3f8f]">à la République.</span></h2><button type="button" data-print-manifest class="rounded-full bg-zinc-900 px-5 py-3 text-sm font-bold text-white transition hover:bg-[#1f3f8f] focus:outline-none focus:ring-2 focus:ring-[#d0212f] focus:ring-offset-2">Télécharger le manifeste en PDF <span aria-hidden="true">↓</span></button><p class="max-w-xl text-sm text-zinc-600">Le téléchargement ouvre la boîte d’impression de votre navigateur. Choisissez « Enregistrer au format PDF ».</p></div><div class="manifesto-paper mx-auto max-w-4xl rounded-[2rem] border border-zinc-900/10 bg-white/55 px-5 py-8 shadow-[0_24px_80px_rgba(31,63,143,.08)] sm:px-10 sm:py-12 lg:px-16"><article class="manifesto-prose min-w-0"><div class="manifesto-intro"><IntroductionContent /></div><h3 class="manifesto-divider"><span>Nos sept principes</span></h3><ol class="manifesto-principles">{principles.map(([path, module]) => { const PrincipleContent = module.Content; return <li><span class="manifesto-number" aria-hidden="true">{module.frontmatter.number}</span><div><details open class="manifesto-principle"><summary class="manifesto-principle-toggle"><span>{module.frontmatter.title}</span><span class="manifesto-chevron" aria-hidden="true">+</span></summary><div class="manifesto-principle-panel"><div class="manifesto-principle-copy"><PrincipleContent /></div></div></details><p class="sr-only">Source éditable : {path}</p></div></li>; })}</ol></article><div class="manifesto-pillar hidden sm:block" aria-hidden="true"></div></div></div></section>
+    <section id="idees" class="px-6 py-24"><div class="mx-auto max-w-7xl"><div class="mb-12 flex items-end justify-between gap-6"><div><p class="mb-4 text-xs font-bold uppercase tracking-[.22em] text-signal">Ce que nous portons</p><h2 class="font-display text-4xl font-bold tracking-[-.04em] sm:text-5xl">Nos Idées fondatrices</h2></div><span class="hidden text-sm text-zinc-600 sm:block">{ideas.length} idées fondatrices</span></div><div class="grid gap-4 md:grid-cols-3">{ideas.map(([, module]) => { const IdeaContent = module.Content; return <article class="group rounded-3xl border border-white/10 bg-white/[.03] p-7 transition duration-300 hover:-translate-y-1 hover:border-signal/50 hover:bg-signal/[.05]"><div class="flex items-center justify-between"><span class="text-2xl text-signal" aria-hidden="true">✦</span><span class="font-mono text-sm text-zinc-600">{module.frontmatter.number}</span></div><h3 class="mt-16 font-display text-2xl font-bold">{module.frontmatter.title}</h3><div class="mt-4 leading-relaxed text-zinc-400"><IdeaContent /></div></article>})}</div></div></section>
+    <section id="soutenir" class="px-6 py-24"><div class="mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] border border-signal/20 bg-signal/[.06] lg:grid-cols-[.9fr_1.1fr]"><div class="p-8 sm:p-12"><p class="mb-4 text-xs font-bold uppercase tracking-[.22em] text-signal">Votre voix compte</p><h2 class="font-display text-5xl font-bold leading-[.95] tracking-[-.05em]">On avance<br /><span class="text-signal">ensemble.</span></h2><p class="mt-8 max-w-sm text-zinc-400">Chaque soutien nous rapproche d’une démocratie vivante. Rejoignez les milliers de citoyens déjà mobilisés.</p></div><div class="bg-black/20 p-8 sm:p-12"><SupportForm client:visible /></div></div></section>
+  </main>
+  <script>
+    document.querySelector('[data-print-manifest]')?.addEventListener('click', () => window.print());
+  </script>
+  <footer class="border-t border-white/10 px-6 py-8"><div class="mx-auto flex max-w-7xl flex-col justify-between gap-5 text-sm text-zinc-500 sm:flex-row sm:items-center"><p>© 2026 Gilets Jaunes 2026. Le pouvoir au peuple.</p><div class="flex items-center gap-5"><a href="#" aria-label="Instagram" class="transition hover:text-signal">Instagram</a><a href="#" aria-label="Facebook" class="transition hover:text-signal">Facebook</a><a href="#" aria-label="Groupe de discussion" class="transition hover:text-signal">Discussion</a><a href="#" class="transition hover:text-white">Mentions légales</a></div></div></footer>
+</BaseLayout>

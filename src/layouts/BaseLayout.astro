@@ -1,0 +1,26 @@
+---
+import { seoConfig, type PageFrontmatter } from '../config/seo';
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props extends Partial<PageFrontmatter> {}
+const { title = seoConfig.title, description = seoConfig.description, keywords = seoConfig.keywords } = Astro.props;
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#09090b" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords.join(', ')} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={seoConfig.locale} />
+    <link rel="icon" href="/favicon.svg" />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body><slot /></body>
+</html>
